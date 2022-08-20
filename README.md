@@ -1,4 +1,4 @@
-# Sample Program to fill a SolR index with sample content from Deezer
+# Program to fill a SolR index with sample content from Deezer
 
 ## Instructions
 
@@ -65,3 +65,15 @@
   
 4. Create 2 environment variables *SOLR_PASSWORD* and *DEEZER_APPSECRET* with your personal information and update the console application constants to reflect your APPID and solR endpoints.
 5. Launch the application : it should connect to Deezer, retrieve some tracks and fill your index. Two sample requests are provided (standard and facetted).  
+
+## Notes
+1. SolrNet is not properly including Authorization headers in synchronous calls, hence the use of async everywhere in the program.
+2. SolrNet can autocreate index fields but it will assume all fields are multivalued (ie mapped to collections and not scalars), thus it's required to create the schema before launching the application the first time.
+3. In case the content of the index should be dropped, use the admin UI, go to collection/documents and issue an update query with a body
+````xml
+        <delete>
+            <query>Emp_Work_Location:Deoria</query>
+        </delete>
+````
+4. To use facets, the field must be marked as *uninvertible*
+5. When creating a string field, use *string* only for ids used 'as is', for all searchable content use rather a localized version such as 'text_fr' otherwise content will be searchable as case-sensitive
