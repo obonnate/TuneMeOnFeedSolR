@@ -1,0 +1,51 @@
+/* the following fields have to be created manually into a catlogTrack solR index, prior to indexation */
+{
+  "name": "album_image",
+  "type": "string",
+  "uninvertible": false,
+  "indexed": true,
+  "stored": true
+}, {
+  "name": "artist_name",
+  "type": "text_en",
+  "uninvertible": false,
+  "indexed": true,
+  "stored": true
+}, {
+  "name": "duration",
+  "type": "pdouble",
+  "uninvertible": false,
+  "indexed": true,
+  "stored": true
+}, {
+  "name": "genre",
+  "type": "string",
+  "uninvertible": true,
+  "indexed": true,
+  "stored": true
+}, {
+  "name": "id",
+  "type": "string",
+  "multiValued": false,
+  "indexed": true,
+  "required": true,
+  "stored": true
+}, {
+  "name": "link",
+  "type": "string",
+  "uninvertible": false,
+  "indexed": true,
+  "stored": true
+}, {
+  "name": "name",
+  "type": "text_en",
+  "uninvertible": false,
+  "indexed": true,
+  "stored": true
+}, {
+  "name": "preview",
+  "type": "string",
+  "uninvertible": false,
+  "indexed": true,
+  "stored": true
+}],

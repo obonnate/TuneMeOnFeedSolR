@@ -37,7 +37,7 @@ namespace FeedIndex
             Artist_name = this.artist?.name,
             Duration = this.duration,
             Name = this.title,
-            Genre = this.album?.genre_id,
+            Genre = this.album?.genre_id?.ToString(),
             Link = this.link,
             Preview = this.preview
         };

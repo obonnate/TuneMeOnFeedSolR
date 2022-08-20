@@ -14,9 +14,9 @@ namespace FeedIndex
         [SolrField("album_image")]
         public string? Album_image { get; set; }
         [SolrField("duration")]
-        public int? Duration { get; set; }
-        [SolrField("genre")]
-        public int? Genre { get; set; }
+        public double? Duration { get; set; }
+        [SolrField("genre")] //uninvertible
+        public string? Genre { get; set; }
         [SolrField("link")]
         public string? Link { get; set; }//The url of the track on Deezer url
         [SolrField("preview")]

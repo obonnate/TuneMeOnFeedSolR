@@ -38,5 +38,32 @@ namespace FeedIndex
             var tokenResponse = await httpClient.PostAsync(CONNECT_ENDPOINT, new FormUrlEncodedContent(form));
             return new TokenResponse(await tokenResponse.Content.ReadAsStringAsync());
         }
+
+        public readonly Dictionary<string, string> GENRES = new (){ { "0",        "Tous"},
+                                                                    { "132",      "Pop"},
+                                                                    { "457",      "Livres audio"},
+                                                                    { "116",      "Rap/Hip Hop"},
+                                                                    { "152",      "Rock"},
+                                                                    { "113",      "Dance"},
+                                                                    { "165",      "R&B"},
+                                                                    { "85",       "Alternative"},
+                                                                    { "106",      "Electro"},
+                                                                    { "466",      "Folk"},
+                                                                    { "144",      "Reggae"},
+                                                                    { "129",      "Jazz"},
+                                                                    { "52",       "Chanson française"},
+                                                                    { "84",       "Country"},
+                                                                    { "98",       "Classique"},
+                                                                    { "173",      "Films/Jeux vidéo"},
+                                                                    { "464",      "Metal"},
+                                                                    { "169",      "Soul & Funk"},
+                                                                    { "153",      "Blues"},
+                                                                    { "95",       "Jeunesse"},
+                                                                    { "197",      "Latino"},
+                                                                    { "2",        "Musique africaine"},
+                                                                    { "12",       "Musique arabe"},
+                                                                    { "16",       "Musique asiatique"},
+                                                                    { "75",       "Musique brésilienne"},
+                                                                    { "81",       "Musique indienne"}};
     }
 }

@@ -8,15 +8,21 @@ using SolrNet.Impl;
 using System.Net.Http.Headers;
 using System.Text;
 
-//GLOBAL PARAMS : Fill in Environment variable for Solr credentials
+//*********************************************************************************************************************
+//GLOBAL PARAMS : Fill in Environment variables below for Solr credentials
 //Index collection has to be created manually on solr, and the catalogtrack schema must be
 //manually edited so that all fields are *not* multivalued (for strange reason, SolrNet by default forces all fields to be multivalued)
+//Facettable fields should be marked as uninvertible
+// Definition for each field can be found in the catlogtrack.schema.json file
+//*********************************************************************************************************************
+
+
 const string INDEXER_LOGIN = @"admin";
 string INDEXER_PWD = Environment.GetEnvironmentVariable("SOLR_PASSWORD")??"";
 const string INDEX_NAME = @"catalogtrack";
-const string INDEXER_ENDPOINT = @"http://localhost:57111/solr";    //Exposed from K8S cluster
+const string INDEXER_ENDPOINT = @"http://localhost:53882/solr";    //Exposed from K8S cluster
 const string APP_ID = "554282";                               //As Registered on Deezer Developper site
-const string APP_SECRET = "75ef5987261e0197bd26829ad7a5cb7d"; //As Registered on Deezer Developper site
+string APP_SECRET = Environment.GetEnvironmentVariable("DEEZER_APPSECRET") ?? "";  //As Registered on Deezer Developper site
 const string DEEZER_API_ENDPOINT = @"http://api.deezer.com";
 //****
 
@@ -37,6 +43,7 @@ internal class Executor
 {
     private readonly SolRService _solRService;
     private readonly DeezerService _deezerService;
+    private const bool AlwaysRebuildIndex = true;
 
     public Executor(SolRService solRService, DeezerService deezerService)
     {
@@ -52,7 +59,7 @@ internal class Executor
             Console.ReadLine();
             Environment.Exit(0);
         }
-        if (_deezerService?.Token != null)
+        if (_deezerService?.Token != null && AlwaysRebuildIndex)
         {
             var tracks = await _deezerService.GetTracksByGenre(464); //464 = Rock&Metal, 132 = pop
             Console.WriteLine($"Found {tracks?.Length ?? 0} tracks for genre {464}");
@@ -60,8 +67,11 @@ internal class Executor
         }
         Console.WriteLine("Index is rebuilt");
         
-        var resultst = _solRService.Query(new FeedIndex.SolR.SearchRequest() { SearchText= "rammstein" });
+        var resultst = _solRService.Query(new FeedIndex.SolR.SearchRequest() { SearchText= "Rammstein" });
         Console.WriteLine("Searching Test :" + string.Join(Environment.NewLine, resultst?.Select(_ => _.Name) ?? Enumerable.Empty<string>()));
+        Console.WriteLine("repartition by actual genre :");
+        foreach (var facet in _solRService.FacetDistribution("genre",10))
+            Console.WriteLine("{0}: {1}", _deezerService?.GetGenreName(facet.Key)??facet.Key, facet.Value);
         Console.ReadLine();
     }
 }
